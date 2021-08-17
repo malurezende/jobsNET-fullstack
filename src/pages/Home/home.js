@@ -1,4 +1,5 @@
 import React from 'react';
+import ContactForm from '../../components/ContactForm/contactForm';
 import Header from '../../components/Header/header';
 
 const Home = () => {
@@ -6,7 +7,7 @@ const Home = () => {
         <>
             <Header />
             
-            <h1>Oi... eu sou o Home</h1>
+            <ContactForm />
         </>
     )
 }
