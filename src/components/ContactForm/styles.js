@@ -35,12 +35,12 @@ export const PersonalData = styled.div`
     width: 100%;
 `;
 
-export const FormRow = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
-    margin-bottom: 30px;
+    export const FormRow = styled.div`
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+        margin-bottom: 30px;
 `;
 
 
@@ -60,7 +60,12 @@ export const BirthdayPicker = styled(DatePicker)`
 `;
 
 export const Documents = styled.div`
-    
+    margin: 10px;
+`;
+
+export const InvalidCPF = styled.p`
+    color: red;
+    font-size: 12px; 
 `;
 
 export const Button = styled.button`
