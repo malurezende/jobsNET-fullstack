@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import * as S from './styles';
 import validation from '../../helpers/validateCPF';
+import getAddressViaCep from '../../services/viaCEP';
 
 const ContactForm = () => {
     const [resultCpfValidation, setResultCpfValidation] = useState(true);
@@ -13,13 +14,21 @@ const ContactForm = () => {
     const [endereco, setEndereco] = useState("");
     const [bairro, setBairro] = useState("");
     const [cidade, setCidade] = useState("");
+    const [cep, setCep] = useState("");
     const [cargoPretendido, setCargoPretendido] = useState(""); 
     const [identidade, setIdentidade] = useState(""); 
+    const [cpf, setCPF] = useState("");
     const [habilitacao, setHabilitacao] = useState(""); 
     const [carroProprio, setCarroProprio] = useState(""); 
 
-
-    const [cpf, setCPF] = useState("");
+    
+   const handleSearchCep = async () => {
+       const address = await getAddressViaCep(cep);
+       console.log(address);
+       setEndereco(address?.logradouro);
+       setBairro(address?.bairro);
+       setCidade(address?.localidade + " - " + address?.uf); 
+   } 
 
     const callValidateCPF = (cpf) => {
         setResultCpfValidation(validation(cpf));
@@ -74,7 +83,7 @@ const ContactForm = () => {
                             <S.Label>Estado civil</S.Label>
                             <S.SelectBox 
                                 value={estadoCivil}
-                                onChange={(event) => setEstadoCivil (event.target.value)}
+                                onChange={(event) => setEstadoCivil(event.target.value)}
                                 name="estado-civil">
                                 <option value="solteiro">Solteiro</option>
                                 <option value="casado">Casado</option>
@@ -86,7 +95,7 @@ const ContactForm = () => {
                             <S.Label>Sexo</S.Label>
                             <S.SelectBox 
                                 value={sexo}
-                                onChange={(event) => setSexo (event.target.value)}
+                                onChange={(event) => setSexo(event.target.value)}
                                 name="sexo">
                                 <option value="masculino">Masculino</option>
                                 <option value="feminino">Feminino</option>
@@ -101,7 +110,7 @@ const ContactForm = () => {
                             <S.Input 
                                 placeholder="Endereço" 
                                 value={endereco}
-                                onChange={(event) => setEndereco (event.target.value)}
+                                onChange={(event) => setEndereco(event.target.value)}
                                 required 
                             />
                         </S.RowLarge>
@@ -112,15 +121,15 @@ const ContactForm = () => {
                             <S.Input 
                                 placeholder="Bairro" 
                                 value={bairro}
-                                onChange={(event) => setBairro (event.target.value)}
+                                onChange={(event) => setBairro(event.target.value)}
                                 required 
                             />
                     </S.RowMedium>
                         <S.RowMedium>
                             <S.Input 
-                                placeholder="Cidade"
+                                placeholder="Cidade - Estado"
                                 value={cidade} 
-                                onChange={(event) => setCidade (event.target.value)}
+                                onChange={(event) => setCidade(event.target.value)}
                                 required 
                             />
                         </S.RowMedium>
@@ -128,13 +137,19 @@ const ContactForm = () => {
 
                     <S.FormRow>
                         <S.RowMedium>
-                            <S.Input placeholder="CEP" required />
+                            <S.Input 
+                            placeholder="CEP" 
+                            value={cep} 
+                            onChange={ (event) => setCep(event.target.value)}
+                            onBlur={handleSearchCep}
+                            required 
+                            />
                     </S.RowMedium>
                         <S.RowMedium>
                             <S.Input 
                                 placeholder="Cargo pretendido" 
                                 value={cargoPretendido}
-                                onChange={(event) => setCargoPretendido (event.target.value)}
+                                onChange={(event) => setCargoPretendido(event.target.value)}
                                 required 
                             />
                         </S.RowMedium>
@@ -149,13 +164,18 @@ const ContactForm = () => {
                             <S.Input 
                                 placeholder="Identidade" 
                                 value={identidade}
-                                onChange={(event) => setIdentidade (event.target.value)}
+                                onChange={(event) => setIdentidade(event.target.value)}
                                 required 
                             />
                         </S.RowMedium>
                         <S.RowMedium>
-                            <S.Input placeholder="CPF" required onChange={(event) => callValidateCPF(event.target.value)} />
-                            {!resultCpfValidation && <S.InvalidCPF>*ops!! CPF invalido</S.InvalidCPF>}
+                            <S.Input 
+                                placeholder="CPF"
+                                value={cpf}
+                                onChange={(event) => callValidateCPF(event.target.value)} 
+                                required 
+                                />
+                            {!resultCpfValidation && <S.InputError>*ops!! CPF invalido</S.InputError>}
                         </S.RowMedium>
                     </S.FormRow>
 
@@ -164,7 +184,7 @@ const ContactForm = () => {
                             <S.Label>Possui habilitação?</S.Label>
                             <S.SelectBox 
                                 value={habilitacao}
-                                onChange={(event) => setHabilitacao (event.target.value)}
+                                onChange={(event) => setHabilitacao(event.target.value)}
                                 name="habilitacao">
                                 <option value="sim">Sim</option>
                                 <option value="nao">Não</option>
@@ -174,7 +194,7 @@ const ContactForm = () => {
                             <S.Label>Possui carro próprio?</S.Label>
                             <S.SelectBox 
                                 value={carroProprio}
-                                onChange={(event) => setCarroProprio (event.target.value)}
+                                onChange={(event) => setCarroProprio(event.target.value)}
                                 name="carro">
                                 <option value="sim">Sim</option>
                                 <option value="nao">Não</option>

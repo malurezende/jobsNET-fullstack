@@ -35,12 +35,12 @@ export const PersonalData = styled.div`
     width: 100%;
 `;
 
-    export const FormRow = styled.div`
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        width: 100%;
-        margin-bottom: 30px;
+export const FormRow = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 30px;
 `;
 
 
@@ -63,9 +63,11 @@ export const Documents = styled.div`
     margin: 10px;
 `;
 
-export const InvalidCPF = styled.p`
+export const InputError = styled.p`
     color: red;
-    font-size: 12px; 
+    font-size: 12px;
+    position: absolute;
+    margin-top: 5px; 
 `;
 
 export const Button = styled.button`
