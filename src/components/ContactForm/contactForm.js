@@ -12,6 +12,7 @@ const ContactForm = () => {
     const [estadoCivil, setEstadoCivil] = useState(""); 
     const [sexo, setSexo] = useState(""); 
     const [endereco, setEndereco] = useState("");
+    const [numero, setNumero] = useState("");
     const [bairro, setBairro] = useState("");
     const [cidade, setCidade] = useState("");
     const [cep, setCep] = useState("");
@@ -20,6 +21,7 @@ const ContactForm = () => {
     const [cpf, setCPF] = useState("");
     const [habilitacao, setHabilitacao] = useState(""); 
     const [carroProprio, setCarroProprio] = useState(""); 
+    const [vagaPCD, setVagaPCD] = useState("");
 
     
    const handleSearchCep = async () => {
@@ -35,10 +37,16 @@ const ContactForm = () => {
         setCPF(cpf);
     }
 
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        console.log('executei', event.target);
+    }
+
     return (
-        <S.Container>
+        <S.Container onSubmit={handleSubmit} noValidate>
                 <S.PersonalData>
-                    <S.H2>DADOS PESSOAIS</S.H2>
+                    <S.H2>DADOS PRINCIPAIS</S.H2>
+                    <S.H3> Informe seus dados principais nos campos abaixo. Ao preencher seu nome, evite abreviações.</S.H3>
                     <S.FormRow>
                         <S.RowLarge>
                             <S.Input 
@@ -50,24 +58,6 @@ const ContactForm = () => {
                         </S.RowLarge>
                     </S.FormRow>
 
-                    <S.FormRow>
-                        <S.RowMedium>
-                            <S.Input 
-                                placeholder="Email"
-                                value={personalEmail}
-                                onChange={(event) => setEmail(event.target.value)}
-                                required
-                            />
-                        </S.RowMedium>
-                        <S.RowMedium>
-                            <S.Input 
-                                placeholder="Celular"
-                                value={celNumber}
-                                onChange={(event) => setCelNumber(event.target.value)} 
-                                required 
-                            />
-                        </S.RowMedium>  
-                    </S.FormRow>
 
                     <S.FormRow>
                         <S.RowMin>
@@ -105,6 +95,27 @@ const ContactForm = () => {
                         </S.RowMin>
                     </S.FormRow>
 
+                    <S.H2>DADOS DE CONTATO</S.H2> 
+                    <S.H3>Informe os dados solicitados, com atenção especial para o seu e-mail, que poderá ser utilizado em contatos das empresas com você.</S.H3>
+                    <S.FormRow>
+                        <S.RowMedium>
+                            <S.Input 
+                                placeholder="Email"
+                                value={personalEmail}
+                                onChange={(event) => setEmail(event.target.value)}
+                                required
+                            />
+                        </S.RowMedium>
+                        <S.RowMedium>
+                            <S.Input 
+                                placeholder="Celular"
+                                value={celNumber}
+                                onChange={(event) => setCelNumber(event.target.value)} 
+                                required 
+                            />
+                        </S.RowMedium>  
+                    </S.FormRow>
+
                     <S.FormRow>
                         <S.RowLarge>
                             <S.Input 
@@ -114,6 +125,16 @@ const ContactForm = () => {
                                 required 
                             />
                         </S.RowLarge>
+
+                        <S.RowMedium>
+                            <S.Input 
+                                placeholder="Número" 
+                                value={numero}
+                                onChange={(event) => setBairro(event.target.value)}
+                                required 
+                            />
+                        </S.RowMedium>
+
                     </S.FormRow>
                     
                     <S.FormRow>
@@ -138,11 +159,11 @@ const ContactForm = () => {
                     <S.FormRow>
                         <S.RowMedium>
                             <S.Input 
-                            placeholder="CEP" 
-                            value={cep} 
-                            onChange={ (event) => setCep(event.target.value)}
-                            onBlur={handleSearchCep}
-                            required 
+                                placeholder="CEP - somente números" 
+                                value={cep} 
+                                onChange={ (event) => setCep(event.target.value)}
+                                onBlur={handleSearchCep}
+                                required 
                             />
                     </S.RowMedium>
                         <S.RowMedium>
@@ -159,6 +180,7 @@ const ContactForm = () => {
 
                 <S.Documents>
                     <S.H2>DOCUMENTOS</S.H2>
+                    <S.H3>O número do seu documento será utilizado exclusivamente para validar o cadastramento único no site.</S.H3>
                     <S.FormRow>
                         <S.RowMedium>
                             <S.Input 
@@ -170,7 +192,7 @@ const ContactForm = () => {
                         </S.RowMedium>
                         <S.RowMedium>
                             <S.Input 
-                                placeholder="CPF"
+                                placeholder="CPF - somente números"
                                 value={cpf}
                                 onChange={(event) => callValidateCPF(event.target.value)} 
                                 required 
@@ -200,11 +222,21 @@ const ContactForm = () => {
                                 <option value="nao">Não</option>
                             </S.SelectBox>
                         </S.RowMin>
+                        <S.RowMin>
+                            <S.Label>Deseja concorrer a vaga PCD?</S.Label>
+                            <S.SelectBox 
+                                value={vagaPCD}
+                                onChange={(event) => setCarroProprio(event.target.value)}
+                                name="vagaPCD">
+                                <option value="sim">Sim</option>
+                                <option value="nao">Não</option>
+                            </S.SelectBox>
+                        </S.RowMin>
                     </S.FormRow>
                 </S.Documents>
 
                 <S.RowLarge>
-                    <S.Button >Enviar!</S.Button>
+                    <S.Button type="submit" value="Enviar" />
                 </S.RowLarge>
 
         </S.Container>

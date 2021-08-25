@@ -1,14 +1,23 @@
 import styled from 'styled-components';
 import DatePicker from 'react-date-picker';
 
-export const Container = styled.div`
+export const Container = styled.form`
     width: 50%;
     margin: 0 auto;
     padding: 50px;
+    border-radius: 5px; 
+    background-color: #fefefe; 
 `;
 
 export const H2 = styled.h2`
-    margin: 0 0 20px 10px; 
+    margin: 0 0 5px 10px; 
+`;
+
+export const H3 = styled.h3`
+    margin: 0 0 25px 10px;
+    font-size: 15px;
+    color: gray;
+    font-style: italic;
 `;
 
 export const Label = styled.label`
@@ -60,7 +69,6 @@ export const BirthdayPicker = styled(DatePicker)`
 `;
 
 export const Documents = styled.div`
-    margin: 10px;
 `;
 
 export const InputError = styled.p`
@@ -70,9 +78,10 @@ export const InputError = styled.p`
     margin-top: 5px; 
 `;
 
-export const Button = styled.button`
+export const Button = styled.input`
     padding: 10px; 
     background-color: #42924c; 
+    font-size: 18px;
     border: none;
     border-radius: 5px; 
     align-items: center;
