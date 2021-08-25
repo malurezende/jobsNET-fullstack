@@ -55,17 +55,35 @@ export class CreateUsers1629758762136 implements MigrationInterface {
                         isNullable: true
                     },
                     {
-                        name: 'phone_number_one',
-                        type: 'varchar',
-                        isNullable: true
-                    },
-                    {
-                        name: 'phone_number_two',
-                        type: 'varchar',
-                        isNullable: true
-                    },
-                    {
                         name: 'desabilities',
+                        type: 'boolean',
+                    },
+                    {
+                        name: 'driver_license',
+                        type: 'boolean',
+                    },
+                    {
+                        name: 'car',
+                        type: 'boolean',
+                    },
+                    {
+                        name: 'street',
+                        type: 'varchar',
+                    },
+                    {
+                        name: 'number',
+                        type: 'integer',
+                    },
+                    {
+                        name: 'neighborhood',
+                        type: 'varchar',
+                    },
+                    {
+                        name: 'city',
+                        type: 'varchar',
+                    },
+                    {
+                        name: 'cep',
                         type: 'varchar',
                     },
                     {
