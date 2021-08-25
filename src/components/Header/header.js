@@ -1,15 +1,13 @@
 import React from 'react';
 import * as S from './styles';
+import Logo from '../../assets/jobs-net.png';
 
 const Header = () => {
     return (
         <S.Container>
-            <h1>JOBS NET</h1>
-            <S.Nav>
-                <li>Home</li>
-                <li>História</li>
-                <li>Contato</li>
-            </S.Nav>
+            <S.HeaderImage src={Logo} alt="" />
+            <h1>CADASTRO DE CANDIDATOS</h1>
+        
         </S.Container>
     )
 }

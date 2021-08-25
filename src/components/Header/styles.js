@@ -3,16 +3,20 @@ import styled from 'styled-components';
 export const Container = styled.div`
     width: 100%;
     height: 70px;
-    background-color: tomato;
+    padding: 70px 20px;
+    box-shadow: 1px 1px 2px 1px #A69888;
+    margin-bottom: 45px;
+    position: relative;
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
+    justify-content: center;
 `;
 
-export const Nav = styled.ul`
-    list-style-type: none;
-    display: flex;
-    flex-direction: row;
+
+export const HeaderImage = styled.img`
+    height: 100px;
+    position: absolute;
+    left: 30px;
+    top: 20px;
+
 `;
