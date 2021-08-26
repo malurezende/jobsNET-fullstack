@@ -72,7 +72,7 @@ export class CreateUsers1629758762136 implements MigrationInterface {
                     },
                     {
                         name: 'number',
-                        type: 'integer',
+                        type: 'varchar',
                     },
                     {
                         name: 'neighborhood',

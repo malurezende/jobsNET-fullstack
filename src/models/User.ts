@@ -45,7 +45,7 @@ class User {
     street: string;
 
     @Column()
-    number: number;
+    number: string;
 
     @Column()
     neighborhood: string;
