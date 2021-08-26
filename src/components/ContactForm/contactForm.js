@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import * as S from './styles';
 import validation from '../../helpers/validateCPF';
 import getAddressViaCep from '../../services/viaCEP';
+import * as Yup from 'yup';
+import getValidationErrors from '../../utils/getValidationErrors';
+import api from '../../services/api';
 
 const ContactForm = () => {
     const [resultCpfValidation, setResultCpfValidation] = useState(true);
     const [fullName, setFullName] = useState("");
-    const [personalEmail, setEmail] = useState ("");
+    const [personalEmail, setPersonalEmail] = useState ("");
     const [celNumber, setCelNumber] = useState("");
     const [birthday, setBirthday] = useState(new Date());
     const [estadoCivil, setEstadoCivil] = useState(""); 
-    const [sexo, setSexo] = useState(""); 
+    const [gender, setGender] = useState(""); 
     const [endereco, setEndereco] = useState("");
     const [numero, setNumero] = useState("");
     const [bairro, setBairro] = useState("");
@@ -19,18 +22,91 @@ const ContactForm = () => {
     const [cargoPretendido, setCargoPretendido] = useState(""); 
     const [identidade, setIdentidade] = useState(""); 
     const [cpf, setCPF] = useState("");
-    const [habilitacao, setHabilitacao] = useState(""); 
-    const [carroProprio, setCarroProprio] = useState(""); 
-    const [vagaPCD, setVagaPCD] = useState("");
+    const [habilitacao, setHabilitacao] = useState(false); 
+    const [carroProprio, setCarroProprio] = useState(false); 
+    const [vagaPCD, setVagaPCD] = useState(false);
+    const [formErrorsState, setFormErrorsState] = useState({});
 
+    const handleContactForm = useCallback(async (contactFormObject) => {
+        try {   
+          setFormErrorsState({});
+
+          const schema = Yup.object().shape({
+            name: Yup.string().required('* Campo obrigatório'),
+            birthday: Yup.string().required('* Campo obrigatório'),
+            mobile_phone: Yup.string().required('* Campo obrigatório'),
+            email: Yup.string().required('* Campo obrigatório'),
+            profession: Yup.string(),
+            marital_status: Yup.string(),
+            gender: Yup.string(),
+            cpf: Yup.string().required('* Campo obrigatório'),
+            rg: Yup.string().required('* Campo obrigatório'),
+            street: Yup.string().required('* Campo obrigatório'),
+            number: Yup.string().required('* Campo obrigatório'),
+            neighborhood: Yup.string().required('* Campo obrigatório'),
+            city: Yup.string().required('* Campo obrigatório'),
+            cep: Yup.string().required('* Campo obrigatório'),
+            desabilities: Yup.boolean(),
+            driver_license: Yup.boolean(),
+            car: Yup.boolean(),
+          });
     
-   const handleSearchCep = async () => {
-       const address = await getAddressViaCep(cep);
-       console.log(address);
-       setEndereco(address?.logradouro);
-       setBairro(address?.bairro);
-       setCidade(address?.localidade + " - " + address?.uf); 
-   } 
+          await schema.validate(contactFormObject, {
+            abortEarly: false,
+          });
+
+          saveContactForm(contactFormObject);
+        } catch (err) {
+          if (err instanceof Yup.ValidationError) {
+            const errors = getValidationErrors(err);
+
+            console.log('errors', errors);
+
+            setFormErrorsState(errors);
+            return;
+          }
+        }
+      }, []);
+
+    const saveContactForm = (contactFormObject) => {
+        api
+        .post("/users", contactFormObject)
+        .then((response) => {
+            window.alert('Seus dados foram cadastrados com sucesso');
+            clearForm();
+        })
+        .catch((err) => {
+          console.error("ops! ocorreu um erro" + err);
+        });
+    }
+
+    const clearForm = () => {
+        setFullName('');
+        setPersonalEmail('');
+        setCelNumber('');
+        setBirthday('');
+        setEstadoCivil('');
+        setGender('');
+        setEndereco('');
+        setNumero('');
+        setBairro('');
+        setCidade('');
+        setCep('');
+        setCargoPretendido('');
+        setIdentidade('');
+        setCPF('');
+        setHabilitacao(false);
+        setCarroProprio(false);
+        setVagaPCD(false);
+    }
+
+    const handleSearchCep = async () => {
+        const address = await getAddressViaCep(cep);
+        console.log(address);
+        setEndereco(address?.logradouro);
+        setBairro(address?.bairro);
+        setCidade(address?.localidade + " - " + address?.uf); 
+    } 
 
     const callValidateCPF = (cpf) => {
         setResultCpfValidation(validation(cpf));
@@ -39,7 +115,28 @@ const ContactForm = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log('executei', event.target);
+        
+        const contactFormObject = {
+            name: fullName,
+            birthday,
+            mobile_phone: celNumber,
+            email: personalEmail,
+            profession: cargoPretendido,
+            marital_status: estadoCivil,
+            gender: gender,
+            cpf,
+            rg: identidade,
+            street: endereco,
+            number: numero,
+            neighborhood: bairro,
+            city: cidade,
+            cep,
+            desabilities: vagaPCD,
+            driver_license: habilitacao,
+            car: carroProprio,
+        }
+
+        handleContactForm(contactFormObject);
     }
 
     return (
@@ -55,6 +152,9 @@ const ContactForm = () => {
                                 onChange={(event) => setFullName(event.target.value)}
                                 required
                             />
+                            {formErrorsState.name && (
+                                <S.InputError>{formErrorsState.name}</S.InputError>
+                            )}
                         </S.RowLarge>
                     </S.FormRow>
 
@@ -82,11 +182,11 @@ const ContactForm = () => {
                             </S.SelectBox>
                         </S.RowMin>
                         <S.RowMin>
-                            <S.Label>Sexo</S.Label>
+                            <S.Label>Gênero</S.Label>
                             <S.SelectBox 
-                                value={sexo}
-                                onChange={(event) => setSexo(event.target.value)}
-                                name="sexo">
+                                value={gender}
+                                onChange={(event) => setGender(event.target.value)}
+                                name="gender">
                                 <option value="masculino">Masculino</option>
                                 <option value="feminino">Feminino</option>
                                 <option value="nao-se-aplica">Não se aplica</option>
@@ -102,9 +202,12 @@ const ContactForm = () => {
                             <S.Input 
                                 placeholder="Email"
                                 value={personalEmail}
-                                onChange={(event) => setEmail(event.target.value)}
+                                onChange={(event) => setPersonalEmail(event.target.value)}
                                 required
                             />
+                            {formErrorsState.email && (
+                                <S.InputError>{formErrorsState.email}</S.InputError>
+                            )}
                         </S.RowMedium>
                         <S.RowMedium>
                             <S.Input 
@@ -113,6 +216,9 @@ const ContactForm = () => {
                                 onChange={(event) => setCelNumber(event.target.value)} 
                                 required 
                             />
+                            {formErrorsState.mobile_phone && (
+                                <S.InputError>{formErrorsState.mobile_phone}</S.InputError>
+                            )}
                         </S.RowMedium>  
                     </S.FormRow>
 
@@ -124,15 +230,21 @@ const ContactForm = () => {
                                 onChange={(event) => setEndereco(event.target.value)}
                                 required 
                             />
+                            {formErrorsState.street && (
+                                <S.InputError>{formErrorsState.street}</S.InputError>
+                            )}
                         </S.RowLarge>
 
                         <S.RowMedium>
                             <S.Input 
                                 placeholder="Número" 
                                 value={numero}
-                                onChange={(event) => setBairro(event.target.value)}
+                                onChange={(event) => setNumero(event.target.value)}
                                 required 
                             />
+                            {formErrorsState.number && (
+                                <S.InputError>{formErrorsState.name}</S.InputError>
+                            )}
                         </S.RowMedium>
 
                     </S.FormRow>
@@ -145,6 +257,9 @@ const ContactForm = () => {
                                 onChange={(event) => setBairro(event.target.value)}
                                 required 
                             />
+                            {formErrorsState.neighborhood && (
+                                <S.InputError>{formErrorsState.neighborhood}</S.InputError>
+                            )}
                     </S.RowMedium>
                         <S.RowMedium>
                             <S.Input 
@@ -153,6 +268,9 @@ const ContactForm = () => {
                                 onChange={(event) => setCidade(event.target.value)}
                                 required 
                             />
+                            {formErrorsState.city && (
+                                <S.InputError>{formErrorsState.city}</S.InputError>
+                            )}
                         </S.RowMedium>
                     </S.FormRow>
 
@@ -165,6 +283,9 @@ const ContactForm = () => {
                                 onBlur={handleSearchCep}
                                 required 
                             />
+                            {formErrorsState.cep && (
+                                <S.InputError>{formErrorsState.cep}</S.InputError>
+                            )}
                     </S.RowMedium>
                         <S.RowMedium>
                             <S.Input 
@@ -173,6 +294,9 @@ const ContactForm = () => {
                                 onChange={(event) => setCargoPretendido(event.target.value)}
                                 required 
                             />
+                            {formErrorsState.profession && (
+                                <S.InputError>{formErrorsState.profession}</S.InputError>
+                            )}
                         </S.RowMedium>
                     </S.FormRow>
 
@@ -197,7 +321,10 @@ const ContactForm = () => {
                                 onChange={(event) => callValidateCPF(event.target.value)} 
                                 required 
                                 />
-                            {!resultCpfValidation && <S.InputError>*ops!! CPF invalido</S.InputError>}
+                                {formErrorsState.cpf && (
+                                <S.InputError>{formErrorsState.cpf}</S.InputError>
+                            )}
+                            {(!resultCpfValidation && !formErrorsState.cpf) && <S.InputError>*ops!! CPF invalido</S.InputError>}
                         </S.RowMedium>
                     </S.FormRow>
 
@@ -208,8 +335,8 @@ const ContactForm = () => {
                                 value={habilitacao}
                                 onChange={(event) => setHabilitacao(event.target.value)}
                                 name="habilitacao">
-                                <option value="sim">Sim</option>
-                                <option value="nao">Não</option>
+                                <option value={true}>Sim</option>
+                                <option value={false}>Não</option>
                             </S.SelectBox>
                         </S.RowMin>
                         <S.RowMin>
@@ -218,18 +345,18 @@ const ContactForm = () => {
                                 value={carroProprio}
                                 onChange={(event) => setCarroProprio(event.target.value)}
                                 name="carro">
-                                <option value="sim">Sim</option>
-                                <option value="nao">Não</option>
+                                <option value={true}>Sim</option>
+                                <option value={false}>Não</option>
                             </S.SelectBox>
                         </S.RowMin>
                         <S.RowMin>
                             <S.Label>Deseja concorrer a vaga PCD?</S.Label>
                             <S.SelectBox 
                                 value={vagaPCD}
-                                onChange={(event) => setCarroProprio(event.target.value)}
+                                onChange={(event) => setVagaPCD(event.target.value)}
                                 name="vagaPCD">
-                                <option value="sim">Sim</option>
-                                <option value="nao">Não</option>
+                                <option value={true}>Sim</option>
+                                <option value={false}>Não</option>
                             </S.SelectBox>
                         </S.RowMin>
                     </S.FormRow>
