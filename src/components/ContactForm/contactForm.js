@@ -11,7 +11,7 @@ const ContactForm = () => {
     const [fullName, setFullName] = useState("");
     const [personalEmail, setPersonalEmail] = useState ("");
     const [celNumber, setCelNumber] = useState("");
-    const [birthday, setBirthday] = useState(new Date());
+    const [birthday, setBirthday] = useState("");
     const [estadoCivil, setEstadoCivil] = useState(""); 
     const [gender, setGender] = useState(""); 
     const [endereco, setEndereco] = useState("");
@@ -59,9 +59,6 @@ const ContactForm = () => {
         } catch (err) {
           if (err instanceof Yup.ValidationError) {
             const errors = getValidationErrors(err);
-
-            console.log('errors', errors);
-
             setFormErrorsState(errors);
             return;
           }
@@ -76,7 +73,9 @@ const ContactForm = () => {
             clearForm();
         })
         .catch((err) => {
-          console.error("ops! ocorreu um erro" + err);
+            if ('Error: Request failed with status code 400') {
+                window.alert('CPF ja cadastrado')
+            }
         });
     }
 
@@ -102,7 +101,6 @@ const ContactForm = () => {
 
     const handleSearchCep = async () => {
         const address = await getAddressViaCep(cep);
-        console.log(address);
         setEndereco(address?.logradouro);
         setBairro(address?.bairro);
         setCidade(address?.localidade + " - " + address?.uf); 
@@ -167,7 +165,9 @@ const ContactForm = () => {
                                 onChange={setBirthday}
                                 format="dd/MM/y"
                             />
-
+                            {formErrorsState.birthday && (
+                                <S.InputError>{formErrorsState.birthday}</S.InputError>
+                            )}
                         </S.RowMin>
                         <S.RowMin>
                             <S.Label>Estado civil</S.Label>
