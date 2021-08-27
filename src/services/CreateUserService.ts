@@ -15,7 +15,7 @@ interface Request {
     driver_license?: boolean;
     car?: boolean;
     street: string;
-    number: number;
+    number: string;
     neighborhood: string;
     city: string;
     cep: string;
