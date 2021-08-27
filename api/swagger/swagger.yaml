@@ -1,0 +1,98 @@
+swagger: "2.0"
+info:
+  description: "API responsável pelo cadastro de candidatos para vagas de empregos do Jobs Net"
+  version: "1.0.0"
+  title: "Jobs Net API"
+host: "localhost:3333"
+basePath: "/"
+schemes:
+- "http"
+paths:
+  /users:
+    post:
+      tags:
+      - "users"
+      summary: "Adiciona novo candidato no banco de dados"
+      description: ""
+      operationId: "addPet"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Objeto do candidato que precisa ser enviado na requisição"
+          required: true
+          schema:
+            $ref: "#/definitions/Users"
+      responses:
+        "200":
+          description: "Candidato cadastrado com sucesso"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Users"
+        "405":
+          description: "CPF já cadastrado"
+        "500":
+          description: "erro interno no servidor"
+          
+        
+definitions:
+  Users:
+    type: "object"
+    properties:
+      name:
+        type: 'string'
+        description: 'candidate full name'
+      birthday:
+        type: 'string'
+        description: 'candidate birthday'
+      mobile_phone:
+        type: 'string'
+        description: 'cadidate mobile phone number'
+      email:
+        type: 'string'
+        description: 'cadidate email'
+      profession:
+        type: 'string'
+        description: 'cadidate profession'
+      marital_status:
+        type: 'string'
+        description: 'cadidate marital status'
+      gender:
+        type: 'string'
+        description: 'cadidate gender'
+      cpf:
+        type: 'string'
+        description: 'cadidate cpf'
+      rg:
+        type: 'string'
+        description: 'cadidate rg'
+      desabilities:
+        type: 'boolean'
+        description: 'cadidate desabilities'
+      driver_license:
+        type: 'boolean'
+        description: 'cadidate driver license'
+      car:
+        type: 'boolean'
+        description: 'cadidate car'
+      street:
+        type: 'string'
+        description: 'cadidate address'
+      number:
+        type: 'string'
+        description: 'cadidate house number'
+      neighborhood:
+        type: 'string'
+        description: 'cadidate neighborhood'
+      city:
+        type: 'string'
+        description: 'cadidate city'
+      cep:
+        type: 'string'
+        description: 'cadidate cep'
+      
