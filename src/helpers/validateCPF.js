@@ -1,5 +1,4 @@
 const validateCPF = (cpf) => {
-    console.log(cpf)
     if (cpf.length != 11) {
         return false;
     }
@@ -7,8 +6,6 @@ const validateCPF = (cpf) => {
         var numeros = cpf.substring(0, 9);
         var digitos = cpf.substring(9);
         var soma = 0
-        console.log('numeros', numeros);
-        console.log('digitos', digitos);
         
         for (var i = 10; i > 1; i--) {
             soma += numeros.charAt(10 - i) * i;
