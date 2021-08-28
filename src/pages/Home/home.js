@@ -5,8 +5,7 @@ import Header from '../../components/Header/header';
 const Home = () => {
     return (
         <>
-            <Header />
-            
+            <Header title="CADASTRO DE CANDIDATOS" headerLink="BUSCAR CANDIDATO" route="/search-user"/>
             <ContactForm />
         </>
     )
