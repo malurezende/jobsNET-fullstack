@@ -21,7 +21,7 @@ export const H3 = styled.h3`
 `;
 
 export const Label = styled.label`
-    color: grey; 
+    color: gray; 
     size: 09px; 
 `;
 
@@ -79,14 +79,16 @@ export const InputError = styled.p`
 `;
 
 export const Button = styled.input`
-    padding: 10px; 
-    background-color: #42924c; 
+    padding: 15px; 
+    background-color: #04d361; 
     font-size: 18px;
     border: none;
     border-radius: 5px; 
     align-items: center;
     cursor: pointer;
     width: 98%;
+    color: white;
+    font-weight: bold;
 `;
 
 
