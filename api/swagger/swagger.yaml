@@ -3,18 +3,16 @@ info:
   description: "API responsável pelo cadastro de candidatos para vagas de empregos do Jobs Net"
   version: "1.0.0"
   title: "Jobs Net API"
-host: "localhost:3333"
+host: "gamajobsnet.herokuapp.com"
 basePath: "/"
 schemes:
-- "http"
+- "https"
 paths:
   /users:
     post:
       tags:
       - "users"
       summary: "Adiciona novo candidato no banco de dados"
-      description: ""
-      operationId: "addPet"
       consumes:
       - "application/json"
       - "application/xml"
@@ -26,22 +24,48 @@ paths:
           description: "Objeto do candidato que precisa ser enviado na requisição"
           required: true
           schema:
-            $ref: "#/definitions/Users"
+            $ref: "#/definitions/AddUser"
       responses:
         "200":
           description: "Candidato cadastrado com sucesso"
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/Users"
+              $ref: "#/definitions/AddUser"
         "405":
-          description: "CPF já cadastrado"
+          description: "CPF already used"
         "500":
           description: "erro interno no servidor"
           
+    get:
+      tags:
+      - "users"
+      summary: "Busca candidato pelo cpf"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/json"
+      parameters:
+        - in: query
+          type: string
+          name: cpf
+          required: true
+          description: CPF do candidato
+      responses:
+        "200":
+          description: "Candidato cadastrado com sucesso"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/FoundUser"
+        "405":
+          description: "CPF not found"
+        "500":
+          description: "erro interno no servidor"
         
 definitions:
-  Users:
+  AddUser:
     type: "object"
     properties:
       name:
@@ -96,3 +120,15 @@ definitions:
         type: 'string'
         description: 'cadidate cep'
       
+  FoundUser:
+    type: "object"
+    properties:
+      name:
+        type: 'string'
+        description: 'candidate full name'
+      profession:
+        type: 'string'
+        description: 'cadidate profession'
+      city:
+        type: 'string'
+        description: 'cadidate city'
