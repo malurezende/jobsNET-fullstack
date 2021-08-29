@@ -16,6 +16,11 @@ Assim que o banco estiver **ok**, você precisará criar um arquivo chamado **or
     "username": "colocar o usuário do banco",
     "password": "colocar o password do banco",
     "database": "colocar o nome do banco"
+     
+O próximo comando instala as dependências necessárias utilizadas no projeto.
+A pasta node_modules será criada.
+
+    yarn
 
 Feito esta configuração você está pronto para executar as migrations.
 Para isso, execute:
@@ -23,12 +28,6 @@ Para isso, execute:
     yarn typeorm migration:run
 
 Se tudo correu bem, você poderá executar os próximos comandos:
-
-     yarn
-
- 
-Instala as dependências necessárias utilizadas no projeto.
-A pasta node_modules será criada.
 
      yarn dev:server
 
