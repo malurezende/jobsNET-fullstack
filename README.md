@@ -35,5 +35,5 @@ A url da API que está sendo consultada pelo frontend é [https://gamajobsnet.he
 
 ## Swagger
 
-A documentação da API foi desenvolvida com **Swagger** está disponível através do link [https://gamajobsnet.herokuapp.com/api-docs/](https://gamajobsnet.herokuapp.com/api-docs/)
+A documentação da API foi desenvolvida com **Swagger** e está disponível através do link [https://gamajobsnet.herokuapp.com/api-docs/](https://gamajobsnet.herokuapp.com/api-docs/).\
 Nela, estão listados os dois endpoints do projeto. Um para cadastro de candidatos e outro para consulta de candidato por CPF cadastrado.
